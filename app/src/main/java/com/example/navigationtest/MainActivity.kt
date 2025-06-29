@@ -40,13 +40,15 @@ class MainActivity : ComponentActivity() {
                     ){
                         ScreenA(
                             navigateToB = {
-                                navController.navigate("screen_b/$it")
+//                                navController.navigate("screen_b/$it")
+                                navController.navigate("screen_b?text=$it")
                             }
                         )
                     }
 
                     composable(
-                        route = "screen_b/{text}",
+//                        route = "screen_b/{text}",
+                        route = "screen_b?text={text}",
                         arguments = listOf(navArgument("text"){
                             type = NavType.StringType
                             nullable = true
