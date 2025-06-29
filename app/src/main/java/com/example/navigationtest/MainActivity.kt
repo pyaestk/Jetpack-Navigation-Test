@@ -1,5 +1,6 @@
 package com.example.navigationtest
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,8 +15,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.navigationtest.ui.theme.NavigationTestTheme
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+
 
 class MainActivity : ComponentActivity() {
+
+    val personNavType = NavigationUtil.parcelableNavType<Person>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,17 +52,23 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         ){
-                            val viewModel: SharedViewModel = it.sharedViewModel(navController = navController)
+
                             ScreenA(
-                                navigateToB = {
-                                    viewModel.person = it
-                                    navController.navigate("screen_b")
+                                navigateToB = { person ->
+                                    val encodedPerson = Uri.encode(Json.encodeToString(person))
+                                    navController.navigate("screen_b/${encodedPerson}")
                                 }
                             )
                         }
 
                         composable(
-                            route = "screen_b",
+                            route = "screen_b/{person}",
+                            arguments = listOf(
+                                navArgument("person"){
+                                    type = personNavType
+                                    nullable = true
+                                }
+                            ),
                             enterTransition = {
                                 slideIntoContainer(
                                     towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -69,8 +83,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                         ){
-                            val viewModel: SharedViewModel = it.sharedViewModel(navController = navController)
-                            viewModel.person?.let {
+                            it.arguments?.getParcelable<Person>("person")?.let { it ->
                                 ScreenB(
                                     navigateToC = {
                                         navController.navigate("screen_c")
@@ -81,15 +94,7 @@ class MainActivity : ComponentActivity() {
                                     person = it
                                 )
                             }
-//                            ScreenB(
-//                                navigateToC = {
-//                                    navController.navigate("screen_c")
-//                                },
-//                                navigateBack = {
-//                                    navController.popBackStack()
-//                                },
-//                                person = viewModel.person
-//                            )
+
 
                         }
 

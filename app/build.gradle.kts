@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-parcelize")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -60,4 +61,6 @@ dependencies {
 
     val nav_version = "2.9.0"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
