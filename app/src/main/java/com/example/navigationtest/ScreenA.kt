@@ -75,8 +75,8 @@ fun ScreenA(
                     navigateToB(
                         Person(
                             name = name,
-                            id = id.toInt(),
-                            age = age.toInt()
+                            id = id.toIntOrNull()?:0,
+                            age = age.toIntOrNull()?:0
                         )
                     )
                 }
