@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenA(
-    navigateToB:(String) -> Unit
+    navigateToB:(Person) -> Unit
 ){
     Scaffold(
         topBar = {
@@ -44,17 +44,41 @@ fun ScreenA(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            var text by remember {
+            var name by remember {
                 mutableStateOf("")
             }
 
-            TextField(value = text, onValueChange = {text = it})
+            var age by remember {
+                mutableStateOf("")
+            }
+
+            var id by remember {
+                mutableStateOf("")
+            }
+
+            TextField(value = name, onValueChange = {
+                name = it
+            })
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            TextField(value = id, onValueChange = {id = it})
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            TextField(value = age, onValueChange = {age = it})
 
             Spacer(modifier = Modifier.height(10.dp))
 
             Button(
                 onClick = {
-                    navigateToB(text)
+                    navigateToB(
+                        Person(
+                            name = name,
+                            id = id.toInt(),
+                            age = age.toInt()
+                        )
+                    )
                 }
             ) {
                 Text("Go to B")

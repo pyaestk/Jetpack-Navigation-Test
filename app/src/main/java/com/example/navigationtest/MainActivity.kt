@@ -40,18 +40,14 @@ class MainActivity : ComponentActivity() {
                     ){
                         ScreenA(
                             navigateToB = {
-                                navController.navigate("screen_b/$it")
+                                navController.currentBackStackEntry?.savedStateHandle?.set("person", it)
+                                navController.navigate("screen_b")
                             }
                         )
                     }
 
                     composable(
-                        route = "screen_b/{text}",
-                        arguments = listOf(navArgument("text"){
-                            type = NavType.StringType
-                            nullable = true
-                            defaultValue = "Unknown"
-                        }),
+                        route = "screen_b",
                         enterTransition = {
                             slideIntoContainer(
                                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -67,6 +63,7 @@ class MainActivity : ComponentActivity() {
 
                     ){
                         //val text = it.arguments?.getString("text")
+
                         ScreenB(
                             navigateToC = {
                                 navController.navigate("screen_c")
@@ -74,7 +71,7 @@ class MainActivity : ComponentActivity() {
                             navigateBack = {
                                 navController.popBackStack()
                             },
-                            text = it.arguments?.getString("text")?: "Unknown"
+                            person = navController.previousBackStackEntry?.savedStateHandle?.get<Person>("person")
                         )
                     }
 

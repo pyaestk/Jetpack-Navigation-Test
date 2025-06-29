@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenB(
-    text: String,
+    person: Person?,
     navigateToC: () -> Unit,
     navigateBack: () -> Unit
 ){
@@ -42,7 +42,7 @@ fun ScreenB(
         ) {
 
 
-            Text(text = text)
+            Text(text = person.toString())
 
             Spacer(modifier = Modifier.height(10.dp))
 
